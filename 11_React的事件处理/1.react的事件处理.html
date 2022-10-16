@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>react的事件处理</title>
+    <script type='text/javascript' src='../js/react.development.js'></script>
+    <script type='text/javascript' src='../js/react-dom.development.js'></script>
+    <script type='text/javascript' src='../js/babel.min.js'></script>
+    <style>
+        #father {
+            width: 400px;
+            height: 400px;
+            background-color: yellow;
+        }
+
+        #father .child {
+            width: 200px;
+            height: 200px;
+            background-color: pink;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="test"></div>
+
+    <script type='text/babel'>
+        // 创建类式组件
+        class Demo extends React.Component {
+            render() {
+                return (
+                    <div id="father" onClick={this.show}>
+                        <button onClick={this.show1} >test1</button>
+                        <button onClick={this.show2} >test2</button>
+                        <div onClick={this.show3} className="child"></div>
+                    </div>
+                )
+            }
+
+            show = (event) => {
+                console.log("show");
+            }
+
+            show1 = () => {
+                console.log("show1");
+            }
+            show2 = () => {
+                console.log("show2");
+            }
+            show3 = (event) => {
+                // 组织冒泡事件
+                event.stopPropagation();
+                console.log("show3");
+            }
+        }
+
+        // 挂载类式组件
+        ReactDOM.render(<Demo />, document.getElementById('test'));
+    </script>
+</body>
+
+</html>

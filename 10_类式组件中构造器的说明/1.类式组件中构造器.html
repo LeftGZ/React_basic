@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>类式组件构造器</title>
+    <script type='text/javascript' src='../js/react.development.js'></script>
+    <script type='text/javascript' src='../js/react-dom.development.js'></script>
+    <script type='text/javascript' src='../js/babel.min.js'></script>
+</head>
+
+<body>
+    <div id="test"></div>
+    <script type='text/babel'>
+
+        // 创建类式组件
+        class Demo extends React.Component {
+            // 构造器
+            constructor(props) {
+                super();
+                //super(props);
+                console.log(props);
+
+                // 如果 super(props); this.props != undefined : this.props == undefined
+                console.log(this.props);
+            }
+            render() {
+                return (
+                    <div onClick={this.show}>test</div>
+                )
+            }
+
+            show = (event) => {
+                console.log(event.target);
+            }
+        }
+
+        // 挂载类式组件
+        ReactDOM.render(<Demo name="李四" age="18" />, document.getElementById('test'));
+    </script>
+</body>
+
+</html>

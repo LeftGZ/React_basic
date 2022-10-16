@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>state的简写方式</title>
+    <script type='text/javascript' src='../js/react.development.js'></script>
+    <script type='text/javascript' src='../js/react-dom.development.js'></script>
+    <script type='text/javascript' src='../js/babel.min.js'></script>
+</head>
+
+<body>
+    <div id="test"></div>
+    <script type='text/babel'>
+        // 创建类式组件
+        class Demo extends React.Component {
+            state = { isHot: true }
+            render() {
+                return (
+                    <div>
+                        <button onClick={this.changeDemo}>切换天气</button>
+                        <h2>今天天气很{this.state.isHot ? "炎热" : "凉爽"}</h2>
+                    </div>
+                )
+            }
+
+            changeDemo = () => {
+                console.log(this);
+                const { isHot } = this.state
+                this.setState({ isHot: !isHot });
+            }
+        }
+        // 渲染 Demo 组件
+        ReactDOM.render(<Demo />, document.getElementById("test"));
+    </script>
+</body>
+
+</html>

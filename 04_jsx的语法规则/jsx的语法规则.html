@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jsx的语法规则</title>
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <script type="text/javascript" src="../js/react-dom.development.js"></script>
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+    <style>
+        .child1 {
+            background-color: yellow;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="test"></div>
+    <script type="text/babel">
+        /*
+            jsx语法规则:
+            1.创建虚拟DOM时，不要写引号;2.标签中要混入js表达式，要是用{}3.标签中样式的类名要用className指定
+            4.标签中的内联样式要用style={{color : ' white'}}，注意属性名转为小驼峰5.只能有一个根标签
+            6.标签必须闭合7.关于标签首字母
+            1.若首字母小写，那么React就会去寻找与之同名的htm1标签
+            若找见,直到接转为html同名元素
+            若未找见，报错
+            2.若首字母大写,那么React就会去寻找与之同名的组件
+            若找见，那么就是用组件
+            若未找见,报错
+        */
+
+        // 数据内容
+        let content = "Hello,React"
+        // 创建虚拟DOM
+        let VDOM = (
+            <div>
+                <h1 style={{ color: "red", fontSize: "20px" }} className="child1" >{content}</h1>
+                <span>我的世界</span>
+                <input type="text" />
+                {/*<Peiqi>注释测试</Peiqi>*/}
+            </div>
+        )
+        // 将虚拟DOM挂载到id为test，div标签中
+        ReactDOM.render(VDOM, document.getElementById("test"));
+
+    </script>
+</body>
+
+</html>

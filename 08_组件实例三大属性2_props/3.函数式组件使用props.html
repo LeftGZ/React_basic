@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>函数式组件使用props</title>
+    <script type='text/javascript' src='../js/react.development.js'></script>
+    <script type='text/javascript' src='../js/react-dom.development.js'></script>
+    <script type='text/javascript' src='../js/babel.min.js'></script>
+    <script type='text/javascript' src='../js/prop-types.js'></script>
+</head>
+
+<body>
+    <div id="test"></div>
+    <script type='text/babel'>
+        // 创建函数式组件
+        function Demo(props) {
+            const { name, sex, age } = props;
+            return (
+                <div>
+                    <h2>今天天气很冷！</h2>
+                    <hr />
+                    <ul>
+                        <li>姓名：{name}</li>
+                        <li>年龄：{age + 1}</li>
+                        <li>性别：{sex}</li>
+                    </ul>
+                </div>
+            )
+        }
+
+        // 模拟服务器请求过来的数据
+        const person = {
+            name: "张三",
+            // age: 23,
+            sex: "男"
+        }
+
+        // props 数据类型限制
+        Demo.propType = {
+            name: PropTypes.string,
+            age: PropTypes.number,
+            sex: PropTypes.string,
+        }
+
+        Demo.defaultProps = {
+            age: 14
+        }
+
+        // 渲染函数式组件
+        ReactDOM.render(<Demo {...person} />, document.getElementById("test"));
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>props的基本使用</title>
+    <script type='text/javascript' src='../js/react.development.js'></script>
+    <script type='text/javascript' src='../js/react-dom.development.js'></script>
+    <script type='text/javascript' src='../js/babel.min.js'></script>
+</head>
+
+<body>
+    <div id="test"></div>
+    <div id="test1"></div>
+    <script type='text/babel'>
+        // 创建类式组件
+        class Demo extends React.Component {
+            render() {
+                let { name, sex, age } = this.props
+                return (
+                    <div>
+                        <ul>
+                            <li>{name}</li>
+                            <li>{sex}</li>
+                            <li>{age}</li>
+                        </ul>
+                    </div>
+                )
+            }
+        }
+        // 渲染类式组件 和 使用props 属性
+        ReactDOM.render(<Demo name="李四" sex="男" age="14" />, document.getElementById("test"));
+
+        // 模拟请求回来的对象数据
+        const person = {
+            name: "张三",
+            sex: "男",
+            age: 13
+        }
+
+        // 使用 ES6 | react 的解构方式
+        ReactDOM.render(<Demo {...person} />, document.getElementById("test1"));
+    </script>
+</body>
+
+</html>
