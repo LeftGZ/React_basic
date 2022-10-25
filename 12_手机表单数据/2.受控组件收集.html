@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>受控组件收集</title>
+    <script type='text/javascript' src='../js/react.development.js'></script>
+    <script type='text/javascript' src='../js/react-dom.development.js'></script>
+    <script type='text/javascript' src='../js/babel.min.js'></script>
+</head>
+
+<body>
+    <div id="test"></div>
+    <script type='text/babel'>
+        // 创建类式组件
+        class Login extends React.Component {
+            state = {
+                username: "",
+                password: "122"
+            }
+            render() {
+                return (
+                    <form onSubmit={this.logins}>
+                        <input type="text" onChange={this.watchUsername} /><br />
+                        <input type="password" onChange={this.watchPassword} /><br />
+                        <button>登录</button>
+                    </form>
+                )
+            }
+
+            watchUsername = (e) => {
+                console.log(e.target.value);
+                this.setState({ username: e.target.value });
+            }
+            watchPassword = (e) => {
+                console.log(e.target.value);
+                this.setState({ password: e.target.value });
+            }
+
+            logins = (event) => {
+                event.preventDefault();
+                const { username, password } = this.state;
+                alert(`登录账号为：${username},密码为：${password}`);
+            }
+        }
+
+        // 渲染组件
+        ReactDOM.render(<Login />, document.getElementById("test"));
+    </script>
+</body>
+
+</html>

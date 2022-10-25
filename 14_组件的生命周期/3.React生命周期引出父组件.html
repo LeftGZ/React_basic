@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React生命周期引出父组件</title>
+    <script type='text/javascript' src='../js/react.development.js'></script>
+    <script type='text/javascript' src='../js/react-dom.development.js'></script>
+    <script type='text/javascript' src='../js/babel.min.js'></script>
+    <style>
+        .father {
+            width: 250px;
+            height: 300px;
+            background-color: orange;
+            padding: 10px;
+        }
+
+        .child {
+            background-color: pink;
+            padding: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="test"></div>
+    <script type='text/babel'>
+        // 创建父类组件
+        class Father extends React.Component {
+            constructor() {
+                super();
+                this.state = {
+                    brand: "雅阁"
+                }
+            }
+            // 换个牌子
+            changeBrand = () => {
+                // let { brand } = this.state;
+                this.setState({ brand: "特斯拉" });
+            }
+
+            // 将要渲染前
+            componentWillMount() {
+                console.log("componentWillMount");
+            }
+
+            // 渲染结束后
+            componentDidMount() {
+                console.log("componentDidMount");
+            }
+
+            // this.setState() --> 判断模块需不需要重新渲染
+            shouldComponentUpdate() {
+                console.log("shouldComponentUpdate");
+                // 返回值为 true or false：false就是不重新渲染，true就是重新渲染
+                return true;
+            }
+
+            // 重渲染前
+            componentWillUpdate() {
+                console.log("componentWillUpdate");
+            }
+
+            // 重渲染结束后
+            componentDidUpdate() {
+                console.log("componentDidUpdate");
+            }
+
+            // 渲染
+            render() {
+                console.log("render");
+                const { brand } = this.state;
+                return (
+                    <div className="father">
+                        <h3>我的豪车品牌是：{brand}</h3>
+                        <button onClick={this.changeBrand}>今年换个牌子</button>
+                        <br />
+                        <br />
+                        <Child fatherBrand={brand} />
+                    </div>
+                )
+            }
+
+
+        }
+
+        class Child extends React.Component {
+            constructor() {
+                super();
+            }
+
+            // 只要父组件重渲染render，该函数就会触发。
+            componentWillReceiveProps() {
+                console.log("componentWillReceiveProps");
+            }
+            render() {
+                const { fatherBrand } = this.props;
+                return (
+                    <div className="child">
+                        <h3>我父亲车的品牌是：{fatherBrand}</h3>
+                    </div>
+                )
+            }
+        }
+
+        // 渲染组件
+        ReactDOM.render(<Father />, document.getElementById("test"));
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,174 @@
+select 
+'敬业度水平' as 关键指数,
+'层级' as 细分结果, 
+f0.ZHR_GLCJ_TXT as 组织,
+CASE WHEN ZSL >= 5.5 AND ZSL <= 6 THEN 1 ELSE 0 END AS 高敬业,
+CASE WHEN ZSL >= 4.5 AND ZSL < 5.5 THEN 1 ELSE 0 END AS 敬业,
+CASE WHEN ZSL >=3.5 AND ZSL < 4.5 THEN 1 ELSE 0 END AS 易提升,
+CASE WHEN ZSL < 3.5 THEN 1 ELSE 0 END AS 不敬业
+from f_ehr_zthrpd0051 f1
+LEFT JOIN f_ehr_zthrpd0050 f0
+ON f1.ZPERNR = f0.ZPERNR
+GROUP BY ZHR_GLCJ, ZHR_GLCJ_TXT
+
+UNION ALL 
+
+select 
+'敬业度水平' as 关键指数,
+'职级' as 细分结果,
+f0.ZHR_CJ_TXT as 组织,
+CASE WHEN ZSL >= 5.5 AND ZSL <= 6 THEN 1 ELSE 0 END AS 高敬业,
+CASE WHEN ZSL >= 4.5 AND ZSL < 5.5 THEN 1 ELSE 0 END AS 敬业,
+CASE WHEN ZSL >=3.5 AND ZSL < 4.5 THEN 1 ELSE 0 END AS 易提升,
+CASE WHEN ZSL < 3.5 THEN 1 ELSE 0 END AS 不敬业
+from f_ehr_zthrpd0051 f1
+LEFT JOIN f_ehr_zthrpd0050 f0
+ON f1.ZPERNR = f0.ZPERNR
+GROUP BY f0.ZHR_CJ, f0.ZHR_CJ_TXT
+
+UNION all
+
+select 
+'敬业度水平' as 关键指数,
+'年龄' as 细分结果,
+case when f0.ZNL + 0 <= 20 then "20岁及以下"
+when f0.ZNL + 0 >= 21 and f0.ZNL <= 25 then "21岁至25岁"
+when f0.ZNL + 0 >= 26 and f0.ZNL <= 30 then "26岁至30岁"
+when f0.ZNL + 0 >= 31 and f0.ZNL <= 35 then "31岁至35岁"
+when f0.ZNL + 0 >= 36 and f0.ZNL <= 40 then "36岁至40岁"
+when f0.ZNL + 0 >= 41 and f0.ZNL <= 45 then "41岁至45岁"
+when f0.ZNL + 0 >= 46 and f0.ZNL <= 50 then "46岁至50岁"
+else "51岁及以上" end as 组织,
+CASE WHEN ZSL >= 5.5 AND ZSL <= 6 THEN 1 ELSE 0 END AS 高敬业,
+CASE WHEN ZSL >= 4.5 AND ZSL < 5.5 THEN 1 ELSE 0 END AS 敬业,
+CASE WHEN ZSL >=3.5 AND ZSL < 4.5 THEN 1 ELSE 0 END AS 易提升,
+CASE WHEN ZSL < 3.5 THEN 1 ELSE 0 END AS 不敬业
+from f_ehr_zthrpd0051 f1
+LEFT JOIN f_ehr_zthrpd0050 f0
+ON f1.ZPERNR = f0.ZPERNR
+GROUP BY 组织
+
+UNION ALL
+
+select 
+'敬业度水平' as 关键指数,
+'性别' as 细分结果,
+f0.GESCH_TXT as 组织,
+CASE WHEN ZSL >= 5.5 AND ZSL <= 6 THEN 1 ELSE 0 END AS 高敬业,
+CASE WHEN ZSL >= 4.5 AND ZSL < 5.5 THEN 1 ELSE 0 END AS 敬业,
+CASE WHEN ZSL >=3.5 AND ZSL < 4.5 THEN 1 ELSE 0 END AS 易提升,
+CASE WHEN ZSL < 3.5 THEN 1 ELSE 0 END AS 不敬业
+from f_ehr_zthrpd0051 f1
+LEFT JOIN f_ehr_zthrpd0050 f0
+ON f1.ZPERNR = f0.ZPERNR
+GROUP BY f0.GESCH, f0.GESCH_TXT
+
+UNION ALL
+
+select 
+'敬业度水平' as 关键指数,
+'学历' as 细分结果,
+f0.HTEXT as 组织,
+CASE WHEN ZSL >= 5.5 AND ZSL <= 6 THEN 1 ELSE 0 END AS 高敬业,
+CASE WHEN ZSL >= 4.5 AND ZSL < 5.5 THEN 1 ELSE 0 END AS 敬业,
+CASE WHEN ZSL >=3.5 AND ZSL < 4.5 THEN 1 ELSE 0 END AS 易提升,
+CASE WHEN ZSL < 3.5 THEN 1 ELSE 0 END AS 不敬业
+from f_ehr_zthrpd0051 f1
+LEFT JOIN f_ehr_zthrpd0050 f0
+ON f1.ZPERNR = f0.ZPERNR
+GROUP BY f0.HSLAR, f0.HTEXT
+
+UNION ALL
+
+select 
+'敬业度水平' as 关键指数,
+'政治面貌' as 细分结果,
+f0.PTEXT as 组织,
+CASE WHEN ZSL >= 5.5 AND ZSL <= 6 THEN 1 ELSE 0 END AS 高敬业,
+CASE WHEN ZSL >= 4.5 AND ZSL < 5.5 THEN 1 ELSE 0 END AS 敬业,
+CASE WHEN ZSL >=3.5 AND ZSL < 4.5 THEN 1 ELSE 0 END AS 易提升,
+CASE WHEN ZSL < 3.5 THEN 1 ELSE 0 END AS 不敬业
+from f_ehr_zthrpd0051 f1
+LEFT JOIN f_ehr_zthrpd0050 f0
+ON f1.ZPERNR = f0.ZPERNR
+GROUP BY f0.PCODE, f0.PTEXT
+
+UNION ALL
+
+select 
+'敬业度水平' as 关键指数,
+'是否为新星' as 细分结果,
+f0.ZSFXX as 组织,
+CASE WHEN ZSL >= 5.5 AND ZSL <= 6 THEN 1 ELSE 0 END AS 高敬业,
+CASE WHEN ZSL >= 4.5 AND ZSL < 5.5 THEN 1 ELSE 0 END AS 敬业,
+CASE WHEN ZSL >=3.5 AND ZSL < 4.5 THEN 1 ELSE 0 END AS 易提升,
+CASE WHEN ZSL < 3.5 THEN 1 ELSE 0 END AS 不敬业
+from f_ehr_zthrpd0051 f1
+LEFT JOIN f_ehr_zthrpd0050 f0
+ON f1.ZPERNR = f0.ZPERNR
+GROUP BY f0.ZSFXX
+
+UNION ALL
+
+select 
+'敬业度水平' as 关键指数,
+'2020年是否调薪' as 细分结果,
+f0.ZSFTX as 组织,
+CASE WHEN ZSL >= 5.5 AND ZSL <= 6 THEN 1 ELSE 0 END AS 高敬业,
+CASE WHEN ZSL >= 4.5 AND ZSL < 5.5 THEN 1 ELSE 0 END AS 敬业,
+CASE WHEN ZSL >=3.5 AND ZSL < 4.5 THEN 1 ELSE 0 END AS 易提升,
+CASE WHEN ZSL < 3.5 THEN 1 ELSE 0 END AS 不敬业
+from f_ehr_zthrpd0051 f1
+LEFT JOIN f_ehr_zthrpd0050 f0
+ON f1.ZPERNR = f0.ZPERNR
+GROUP BY f0.ZSFTX
+
+UNION ALL
+
+select 
+'敬业度水平' as 关键指数,
+'最近一次绩效考核成绩' as 细分结果,
+f0.ZJXJG_TXT as 组织,
+CASE WHEN ZSL >= 5.5 AND ZSL <= 6 THEN 1 ELSE 0 END AS 高敬业,
+CASE WHEN ZSL >= 4.5 AND ZSL < 5.5 THEN 1 ELSE 0 END AS 敬业,
+CASE WHEN ZSL >=3.5 AND ZSL < 4.5 THEN 1 ELSE 0 END AS 易提升,
+CASE WHEN ZSL < 3.5 THEN 1 ELSE 0 END AS 不敬业
+from f_ehr_zthrpd0051 f1
+LEFT JOIN f_ehr_zthrpd0050 f0
+ON f1.ZPERNR = f0.ZPERNR
+GROUP BY f0.ZJXJG,f0.ZJXJG_TXT
+
+UNION ALL
+
+select 
+'敬业度水平' as 关键指数,
+'请问您的家庭所在地是否在公司所在地' as 细分结果,
+f0.ZPLACE as 组织,
+CASE WHEN ZSL >= 5.5 AND ZSL <= 6 THEN 1 ELSE 0 END AS 高敬业,
+CASE WHEN ZSL >= 4.5 AND ZSL < 5.5 THEN 1 ELSE 0 END AS 敬业,
+CASE WHEN ZSL >=3.5 AND ZSL < 4.5 THEN 1 ELSE 0 END AS 易提升,
+CASE WHEN ZSL < 3.5 THEN 1 ELSE 0 END AS 不敬业
+from f_ehr_zthrpd0051 f1
+LEFT JOIN f_ehr_zthrpd0050 f0
+ON f1.ZPERNR = f0.ZPERNR
+GROUP BY f0.ZPLACE
+
+UNION ALL
+
+select 
+'敬业度水平' as 关键指数,
+'司龄' as 细分结果,
+case when zsl + 0 <= 0.6 then "6个月及以下"
+when zsl + 0 > 0.6 and zsl + 0 <= 1.0 then "6个月至1年（含1年）"
+when zsl + 0 > 1.0 and zsl + 0 <= 3.0 then "1年至3年（含3年）"
+when zsl + 0 > 3.0 and zsl + 0 <= 5.0 then "3年至5年（含5年）"
+when zsl + 0 > 5.0 and zsl + 0 <= 10.9 then "5年至10年（含10年）"
+else "10年以上" end as 组织,
+CASE WHEN ZSL >= 5.5 AND ZSL <= 6 THEN 1 ELSE 0 END AS 高敬业,
+CASE WHEN ZSL >= 4.5 AND ZSL < 5.5 THEN 1 ELSE 0 END AS 敬业,
+CASE WHEN ZSL >=3.5 AND ZSL < 4.5 THEN 1 ELSE 0 END AS 易提升,
+CASE WHEN ZSL < 3.5 THEN 1 ELSE 0 END AS 不敬业
+from f_ehr_zthrpd0051 f1
+LEFT JOIN f_ehr_zthrpd0050 f0
+ON f1.ZPERNR = f0.ZPERNR
+GROUP BY 组织

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React的生命周期(新)</title>
+    <script type='text/javascript' src='../js/17.1/react.development.js'></script>
+    <script type='text/javascript' src='../js/17.1/react-dom.development.js'></script>
+    <script type='text/javascript' src='../js/17.1/babel.min.js'></script>
+</head>
+
+<body>
+    <div id="test"></div>
+    <script type='text/babel'>
+        // 创建类式组件
+        class Life extends React.Component {
+            constructor() {
+                super();
+                this.state = {
+                    city: "广州",
+                    flag: true
+                }
+            }
+
+            static getDerivedStateFromProps(props, state) {
+                console.log("getDerivedStateFromProps", props, state);
+                return null;
+            }
+
+            getSnapshotBeforeUpdate() {
+                console.log("getSnapshotBeforeUpdate");
+                return null;
+            }
+
+            componentDidUpdate() {
+                console.log("componentDidUpdate");
+            }
+
+            render() {
+                const { a } = this.props;
+                const { city, flag } = this.state;
+                return (
+                    <div>
+                        <h4>今天{city}天气很：{flag ? a : "炎热"}</h4>
+                        <button onClick={this.weather}>切换天气</button>
+                    </div>
+                )
+            }
+
+            weather = () => {
+                let { flag } = this.state;
+                if (flag) {
+                    this.setState({ flag: !flag });
+                } else {
+                    this.setState({ flag: !flag });
+                }
+            }
+        }
+
+        // 渲染组件
+        ReactDOM.render(<Life a="凉爽" />, document.getElementById("test"));
+    </script>
+
+</body>
+
+</html>

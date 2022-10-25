@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React的生命周期(旧)</title>
+    <script type='text/javascript' src='../js/react.development.js'></script>
+    <script type='text/javascript' src='../js/react-dom.development.js'></script>
+    <script type='text/javascript' src='../js/babel.min.js'></script>
+</head>
+
+<body>
+    <div id="test"></div>
+    <script type='text/babel'>
+        // 创建类式组件
+        class Life extends React.Component {
+            // 构造器
+            constructor() {
+                console.log("constructor");
+                super();
+                this.state = {
+                    startNum: 0
+                }
+            }
+
+            //当前值+1函数
+            add = () => {
+                let { startNum } = this.state;
+                startNum += 1;
+                this.setState({ startNum });
+            }
+
+            // 卸载组件
+            death = () => {
+                ReactDOM.unmountComponentAtNode(document.getElementById("test"));
+            }
+
+            // 跳过判断渲染周期钩子直接执行
+            must = () => {
+                this.forceUpdate();
+            }
+
+            // 卸载组件触发的钩子
+            componentWillUnmount() {
+                console.log("componentWillUnmount");
+            }
+
+            // 将要渲染前
+            componentWillMount() {
+                console.log("componentWillMount");
+            }
+
+            // 渲染结束后
+            componentDidMount() {
+                console.log("componentDidMount");
+            }
+
+            // this.setState() --> 判断模块需不需要重新渲染
+            shouldComponentUpdate() {
+                console.log("shouldComponentUpdate");
+                // 返回值为 true or false：false就是不重新渲染，true就是重新渲染
+                return false;
+            }
+
+            // 模块将要渲染
+            componentWillUpdate() {
+                console.log("componentWillUpdata");
+            }
+
+            // 模块渲染结束
+            componentDidUpdate() {
+                console.log("componentDidUpdate");
+            }
+
+            // 渲染
+            render() {
+                const { startNum } = this.state;
+                return (
+                    <div>
+                        <h3>当前的值为：{startNum}</h3>
+                        <button onClick={this.add}>当前值+1</button>
+                        <button onClick={this.death}>卸载组件</button>
+                        <button onClick={this.must}>跳过判断渲染周期钩子直接执行</button>
+                    </div>
+                )
+            }
+        }
+
+        // 渲染类式组件
+        ReactDOM.render(<Life />, document.getElementById("test"));
+    </script>
+</body>
+
+</html>

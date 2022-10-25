@@ -1,0 +1,31 @@
+with t1 as(
+select 
+f0.*,
+sum(f1.ZTM_FZ) / (select count(*) from (SELECT DISTINCT ZTM_MC from f_ehr_zthrpd0051 WHERE ZNUMC_WD = "00000451") a1) as proj_avg
+from f_ehr_zthrpd0051 f1
+left JOIN f_ehr_zthrpd0050 f0
+ON f1.ZPERNR = f0.ZPERNR AND f1.ZNUM_DYID = f0.ZNUM_DYID
+where f1.ZNUMC_WD = "00000451"
+GROUP BY f1.ZNUM_DYID,f1.ZPERNR)
+	
+	
+select 
+'敬业度水平' as 关键指数,
+'性别' as 细分结果,
+GESCH_TXT as 组织,
+sum(CASE WHEN proj_avg >= 5.5 AND proj_avg <= 6 THEN 1 ELSE 0 END) AS 高敬业,
+sum(CASE WHEN proj_avg >= 4.5 AND proj_avg < 5.5 THEN 1 ELSE 0 END) AS 敬业,
+sum(CASE WHEN proj_avg >=3.5 AND proj_avg < 4.5 THEN 1 ELSE 0 END) AS 易提升,
+sum(CASE WHEN proj_avg < 3.5 THEN 1 ELSE 0 END) AS 不敬业
+from t1
+GROUP BY GESCH, GESCH_TXT
+
+
+select 
+f0.*,
+sum(f1.ZTM_FZ)
+from f_ehr_zthrpd0051 f1
+LEFT JOIN f_ehr_zthrpd0050 f0 
+on f1.ZPERNR = f0.ZPERNR AND f1.ZNUM_DYID = f0.ZNUM_DYID
+where f1.ZNUMC_WD = "00000451"
+GROUP BY f0.ZNUM_DYID, f0.ZPERNR

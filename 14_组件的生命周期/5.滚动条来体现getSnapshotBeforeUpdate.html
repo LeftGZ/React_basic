@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>滚动条来体现getSnapshotBeforeUpdate</title>
+    <script type='text/javascript' src='../js/17.1/react.development.js'></script>
+    <script type='text/javascript' src='../js/17.1/react-dom.development.js'></script>
+    <script type='text/javascript' src='../js/17.1/babel.min.js'></script>
+    <style>
+        #test {
+            width: 100%;
+            height: 300px;
+            border: 1px solid pink;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .item_father {
+            width: 150px;
+            height: 200px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: auto;
+        }
+
+        .item_father ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .item_father ul li {
+            border: 1px solid rgb(255, 125, 125);
+            padding: 3px;
+            height: 30px;
+            line-height: 30px;
+            background-color: pink;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="test"></div>
+    <script type='text/babel'>
+        // 创建类式组件
+        class Scrolls extends React.Component {
+            constructor() {
+                super();
+                this.state = {
+                    news: [],
+                }
+            }
+
+            // 渲染结束后
+            componentDidMount() {
+                this.timer = setInterval(() => {
+                    let { news } = this.state;
+                    let nums = '新闻' + (news.length + 1);
+                    this.setState({ news: [nums, ...news] });
+                }, 1000);
+            }
+
+            // 将要改变DOM时
+            getSnapshotBeforeUpdate() {
+                console.log("getSnaphotBeforeUpdate");
+                return this.refs.list.scrollHeight;
+            }
+
+            // 更改结束后
+            componentDidUpdate(props, state, h) {
+                this.refs.list.scrollTop += this.refs.list.scrollHeight - h;
+                console.log("componentDidUpdate");
+            }
+
+            // 卸载组件
+            componentWillUnmount() {
+                clearInterval(this.timer);
+            }
+
+            // 渲染
+            render() {
+                return (
+                    <div>
+                        <div className="item_father" ref="list">
+                            <ul>
+                                {
+                                    this.state.news.map((item, index) => {
+                                        return <li key={index}>{item}</li>
+                                    })
+                                }
+                            </ul>
+                        </div>
+                        <button onClick={this.stop}>暂停</button>
+                        <button onClick={this.start}>启动</button>
+                        <button onClick={this.death}>销毁</button>
+                    </div>
+
+                )
+            }
+
+            stop = () => {
+                // ReactDOM.unmountComponentAtNode(document.getElementById("test"));
+                // 清除定时器，并赋值this.timer为null
+                clearInterval(this.timer);
+                this.timer = null;
+            }
+
+            start = () => {
+                // 判断this.timer是否为null
+                if (this.timer == null) {
+                    this.timer = setInterval(() => {
+                        let { news } = this.state;
+                        let nums = '新闻' + (news.length + 1);
+                        this.setState({ news: [nums, ...news] });
+                    }, 1000);
+                }
+            }
+
+            death = () => {
+                // 销毁组件
+                ReactDOM.unmountComponentAtNode(document.getElementById("test"));
+            }
+        }
+
+        // 渲染类式组件
+        ReactDOM.render(<Scrolls a="广州新闻" />, document.getElementById("test"));
+    </script>
+</body>
+
+</html>

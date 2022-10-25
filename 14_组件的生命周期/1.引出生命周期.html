@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>引出生命周期</title>
+    <script type='text/javascript' src='../js/react.development.js'></script>
+    <script type='text/javascript' src='../js/react-dom.development.js'></script>
+    <script type='text/javascript' src='../js/babel.min.js'></script>
+</head>
+
+<body>
+    <div id="test"></div>
+    <script type='text/babel'>
+        // 创建类式组件
+        class Life extends React.Component {
+            state = {
+                opacity: 1
+            }
+            render() {
+                const { opacity } = this.state;
+                return (
+                    <div>
+                        <h2 style={{ opacity }}>引出生命周期</h2>
+                        <button onClick={this.death}>不活了</button>
+                    </div>
+                )
+            }
+
+            // 该生命周期钩子，在render挂载后就执行一次。
+            componentDidMount() {
+                this.timer = setInterval(() => {
+                    let { opacity } = this.state;
+                    opacity -= 0.05;
+                    if (opacity <= 0) {
+                        this.setState({ opacity: 1 });
+                        console.log(opacity);
+                    } else {
+                        this.setState({ opacity })
+                    }
+                }, 70);
+            }
+
+            componentWillUnmount() {
+                console.log("componentWillUnmount");
+                clearInterval(this.timer);
+            }
+
+            death = () => {
+                console.log("死亡");
+                // 杀死组件
+                ReactDOM.unmountComponentAtNode(document.getElementById("test"));
+            }
+        }
+
+        // 渲染类式组件
+        ReactDOM.render(<Life />, document.getElementById("test"));
+    </script>
+</body>
+
+</html>
