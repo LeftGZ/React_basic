@@ -1,0 +1,163 @@
+# React_basic
+with t1 as(
+select 
+f0.*,
+sum(f1.ZTM_FZ) / (select count(*) from (SELECT DISTINCT ZTM_MC from f_ehr_zthrpd0051 WHERE ZNUMC_WD = "00000451") a1) as proj_avg
+from f_ehr_zthrpd0051 f1
+left JOIN f_ehr_zthrpd0050 f0
+ON f1.ZPERNR = f0.ZPERNR AND f1.ZNUM_DYID = f0.ZNUM_DYID
+where f1.ZNUMC_WD = "00000451"
+GROUP BY f1.ZNUM_DYID,f1.ZPERNR)
+ 
+select 
+'敬业度水平' as 关键指数,
+'层级' as 细分结果, 
+ZHR_GLCJ_TXT as 组织,
+sum(CASE WHEN proj_avg >= 5.5 AND proj_avg <= 6 THEN 1 ELSE 0 END) AS 高敬业,
+sum(CASE WHEN proj_avg >= 4.5 AND proj_avg < 5.5 THEN 1 ELSE 0 END) AS 敬业,
+sum(CASE WHEN proj_avg >=3.5 AND proj_avg < 4.5 THEN 1 ELSE 0 END) AS 易提升,
+sum(CASE WHEN proj_avg < 3.5 THEN 1 ELSE 0 END) AS 不敬业
+from t1
+GROUP BY ZHR_GLCJ, ZHR_GLCJ_TXT
+
+UNION ALL 
+
+select 
+'敬业度水平' as 关键指数,
+'职级' as 细分结果,
+ZHR_CJ_TXT as 组织,
+sum(CASE WHEN proj_avg >= 5.5 AND proj_avg <= 6 THEN 1 ELSE 0 END) AS 高敬业,
+sum(CASE WHEN proj_avg >= 4.5 AND proj_avg < 5.5 THEN 1 ELSE 0 END) AS 敬业,
+sum(CASE WHEN proj_avg >=3.5 AND proj_avg < 4.5 THEN 1 ELSE 0 END) AS 易提升,
+sum(CASE WHEN proj_avg < 3.5 THEN 1 ELSE 0 END) AS 不敬业
+from t1
+GROUP BY ZHR_CJ, ZHR_CJ_TXT
+
+UNION all
+
+select 
+'敬业度水平' as 关键指数,
+'年龄' as 细分结果,
+case when ZNL + 0 <= 20 then "20岁及以下"
+when ZNL + 0 >= 21 and ZNL <= 25 then "21岁至25岁"
+when ZNL + 0 >= 26 and ZNL <= 30 then "26岁至30岁"
+when ZNL + 0 >= 31 and ZNL <= 35 then "31岁至35岁"
+when ZNL + 0 >= 36 and ZNL <= 40 then "36岁至40岁"
+when ZNL + 0 >= 41 and ZNL <= 45 then "41岁至45岁"
+when ZNL + 0 >= 46 and ZNL <= 50 then "46岁至50岁"
+else "51岁及以上" end as 组织,
+sum(CASE WHEN proj_avg >= 5.5 AND proj_avg <= 6 THEN 1 ELSE 0 END) AS 高敬业,
+sum(CASE WHEN proj_avg >= 4.5 AND proj_avg < 5.5 THEN 1 ELSE 0 END) AS 敬业,
+sum(CASE WHEN proj_avg >=3.5 AND proj_avg < 4.5 THEN 1 ELSE 0 END) AS 易提升,
+sum(CASE WHEN proj_avg < 3.5 THEN 1 ELSE 0 END) AS 不敬业
+from t1
+GROUP BY 组织
+
+UNION ALL
+
+select 
+'敬业度水平' as 关键指数,
+'性别' as 细分结果,
+GESCH_TXT as 组织,
+sum(CASE WHEN proj_avg >= 5.5 AND proj_avg <= 6 THEN 1 ELSE 0 END) AS 高敬业,
+sum(CASE WHEN proj_avg >= 4.5 AND proj_avg < 5.5 THEN 1 ELSE 0 END) AS 敬业,
+sum(CASE WHEN proj_avg >=3.5 AND proj_avg < 4.5 THEN 1 ELSE 0 END) AS 易提升,
+sum(CASE WHEN proj_avg < 3.5 THEN 1 ELSE 0 END) AS 不敬业
+from t1
+GROUP BY GESCH, GESCH_TXT
+
+UNION ALL
+
+select 
+'敬业度水平' as 关键指数,
+'学历' as 细分结果,
+HTEXT as 组织,
+sum(CASE WHEN proj_avg >= 5.5 AND proj_avg <= 6 THEN 1 ELSE 0 END) AS 高敬业,
+sum(CASE WHEN proj_avg >= 4.5 AND proj_avg < 5.5 THEN 1 ELSE 0 END) AS 敬业,
+sum(CASE WHEN proj_avg >=3.5 AND proj_avg < 4.5 THEN 1 ELSE 0 END) AS 易提升,
+sum(CASE WHEN proj_avg < 3.5 THEN 1 ELSE 0 END) AS 不敬业
+from t1
+GROUP BY HSLAR, HTEXT
+
+UNION ALL
+
+select 
+'敬业度水平' as 关键指数,
+'政治面貌' as 细分结果,
+PTEXT as 组织,
+sum(CASE WHEN proj_avg >= 5.5 AND proj_avg <= 6 THEN 1 ELSE 0 END) AS 高敬业,
+sum(CASE WHEN proj_avg >= 4.5 AND proj_avg < 5.5 THEN 1 ELSE 0 END) AS 敬业,
+sum(CASE WHEN proj_avg >=3.5 AND proj_avg < 4.5 THEN 1 ELSE 0 END) AS 易提升,
+sum(CASE WHEN proj_avg < 3.5 THEN 1 ELSE 0 END) AS 不敬业
+from t1
+GROUP BY PCODE, PTEXT
+
+UNION ALL
+
+select 
+'敬业度水平' as 关键指数,
+'是否为新星' as 细分结果,
+ZSFXX as 组织,
+sum(CASE WHEN proj_avg >= 5.5 AND proj_avg <= 6 THEN 1 ELSE 0 END) AS 高敬业,
+sum(CASE WHEN proj_avg >= 4.5 AND proj_avg < 5.5 THEN 1 ELSE 0 END) AS 敬业,
+sum(CASE WHEN proj_avg >=3.5 AND proj_avg < 4.5 THEN 1 ELSE 0 END) AS 易提升,
+sum(CASE WHEN proj_avg < 3.5 THEN 1 ELSE 0 END) AS 不敬业
+from t1
+GROUP BY ZSFXX
+
+UNION ALL
+
+select 
+'敬业度水平' as 关键指数,
+'2020年是否调薪' as 细分结果,
+ZSFTX as 组织,
+sum(CASE WHEN proj_avg >= 5.5 AND proj_avg <= 6 THEN 1 ELSE 0 END) AS 高敬业,
+sum(CASE WHEN proj_avg >= 4.5 AND proj_avg < 5.5 THEN 1 ELSE 0 END) AS 敬业,
+sum(CASE WHEN proj_avg >=3.5 AND proj_avg < 4.5 THEN 1 ELSE 0 END) AS 易提升,
+sum(CASE WHEN proj_avg < 3.5 THEN 1 ELSE 0 END) AS 不敬业
+from t1
+GROUP BY ZSFTX
+
+UNION ALL
+
+select 
+'敬业度水平' as 关键指数,
+'最近一次绩效考核成绩' as 细分结果,
+ZJXJG_TXT as 组织,
+sum(CASE WHEN proj_avg >= 5.5 AND proj_avg <= 6 THEN 1 ELSE 0 END) AS 高敬业,
+sum(CASE WHEN proj_avg >= 4.5 AND proj_avg < 5.5 THEN 1 ELSE 0 END) AS 敬业,
+sum(CASE WHEN proj_avg >=3.5 AND proj_avg < 4.5 THEN 1 ELSE 0 END) AS 易提升,
+sum(CASE WHEN proj_avg < 3.5 THEN 1 ELSE 0 END) AS 不敬业
+from t1
+GROUP BY ZJXJG,ZJXJG_TXT
+
+UNION ALL
+
+select 
+'敬业度水平' as 关键指数,
+'请问您的家庭所在地是否在公司所在地' as 细分结果,
+ZPLACE as 组织,
+sum(CASE WHEN proj_avg >= 5.5 AND proj_avg <= 6 THEN 1 ELSE 0 END) AS 高敬业,
+sum(CASE WHEN proj_avg >= 4.5 AND proj_avg < 5.5 THEN 1 ELSE 0 END) AS 敬业,
+sum(CASE WHEN proj_avg >=3.5 AND proj_avg < 4.5 THEN 1 ELSE 0 END) AS 易提升,
+sum(CASE WHEN proj_avg < 3.5 THEN 1 ELSE 0 END) AS 不敬业
+from t1
+GROUP BY ZPLACE
+
+UNION ALL
+
+select 
+'敬业度水平' as 关键指数,
+'司龄' as 细分结果,
+case when zsl + 0 <= 0.6 then "6个月及以下"
+when zsl + 0 > 0.6 and zsl + 0 <= 1.0 then "6个月至1年（含1年）"
+when zsl + 0 > 1.0 and zsl + 0 <= 3.0 then "1年至3年（含3年）"
+when zsl + 0 > 3.0 and zsl + 0 <= 5.0 then "3年至5年（含5年）"
+when zsl + 0 > 5.0 and zsl + 0 <= 10.9 then "5年至10年（含10年）"
+else "10年以上" end as 组织,
+sum(CASE WHEN proj_avg >= 5.5 AND proj_avg <= 6 THEN 1 ELSE 0 END) AS 高敬业,
+sum(CASE WHEN proj_avg >= 4.5 AND proj_avg < 5.5 THEN 1 ELSE 0 END) AS 敬业,
+sum(CASE WHEN proj_avg >=3.5 AND proj_avg < 4.5 THEN 1 ELSE 0 END) AS 易提升,
+sum(CASE WHEN proj_avg < 3.5 THEN 1 ELSE 0 END) AS 不敬业
+from t1
+GROUP BY 组织
